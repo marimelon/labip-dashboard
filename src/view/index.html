@@ -1,0 +1,66 @@
+{{define "index"}}
+
+<head>
+    <style>
+        body {
+            background-color: white;
+            color: black;
+        }
+
+    </style>
+    <script language="javascript" type="text/javascript">
+        function ReloadIpData() {
+            const bt = document.getElementById("fetchBt");
+            bt.disabled = true;
+
+            const tbody = document.getElementById("ipTbody");
+            while (tbody.firstChild) {
+                tbody.removeChild(tbody.firstChild);
+            }
+
+            fetch("./ip?date=" + Date.now())
+                .then(res => res.json())
+                .then(json => {
+                    document.getElementById("fetchDate").innerText = json["FetchDate"];
+
+                    for (const data of json["IpList"]) {
+                        const tr = document.createElement('tr');
+                        for (const key of ["Ip", "Mac", "Company"]) {
+                            const td = document.createElement('td');
+                            td.textContent = data[key];
+                            tr.appendChild(td);
+                        }
+                        tbody.appendChild(tr);
+                    }
+                }).finally(() => { bt.disabled = false; })
+        }
+    </script>
+</head>
+
+<h1>
+    <div>IP List</div>
+</h1>
+
+<button id="fetchBt" onclick="ReloadIpData()">最新の情報を取得</button>
+(取得日時:<span id="fetchDate">{{ .FetchDate }}</span>)
+
+<table style="width: 100%;">
+    <thead>
+        <tr>
+            <th>IP</th>
+            <th>MAC</th>
+            <th>Company</th>
+        </tr>
+    </thead>
+    <tbody id="ipTbody">
+        {{ range .IpList }}
+        <tr>
+            <td>{{.Ip}}</td>
+            <td>{{.Mac}}</td>
+            <td>{{.Company}}</td>
+        </tr>
+        {{ end }}
+    </tbody>
+</table>
+
+{{end}}

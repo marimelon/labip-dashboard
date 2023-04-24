@@ -1,0 +1,36 @@
+{
+    "name": "labip-dashboard-dev",
+    "dockerFile": "./Dockerfile",
+    "runArgs": [
+        "--init",
+        "--network=host"
+    ],
+    "remoteEnv": {},
+    "forwardPorts": [],
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "mhutchie.git-graph",
+                "golang.go"
+            ],
+            "settings": {}
+        }
+    },
+    "features": {
+        "ghcr.io/devcontainers/features/common-utils:2": {
+            "username": "automatic",
+            "uid": "automatic",
+            "gid": "automatic",
+            "installZsh": true,
+            "installOhMyZsh": true,
+            "upgradePackages": true,
+            "nonFreePackages": false
+        },
+        "ghcr.io/devcontainers/features/docker-in-docker:2": {
+            "version": "latest",
+            "moby": true,
+            "dockerDashComposeVersion": "v2"
+        },
+        "ghcr.io/devcontainers/features/go:1": {}
+    }
+}
